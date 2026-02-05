@@ -1,15 +1,40 @@
-name: Docker Image CI
+name: Build and Publish Images
 
 on:
   push:
     branches: ["main"]
 
+env:
+  REGISTRY: ghcr.io
+
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build the Docker images
-        run: docker compose build
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Java Bridge
+        uses: docker/build-push-action@v5
+        with:
+          context: ./java-bridge
+          push: true
+          tags: ghcr.io/${{ github.repository }}/java-bridge:latest
+
+      - name: Build and push Python Engine
+        uses: docker/build-push-action@v5
+        with:
+          context: ./fire-python-service
+          push: true
+          tags: ghcr.io/${{ github.repository }}/python-engine:latest

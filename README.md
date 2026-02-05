@@ -71,3 +71,20 @@ Ensure the TimeSeriesSplit logic is functioning within the Python sub-system.
     Action: Check the Python logs during a request.
 
     Success Metric: Logs should indicate the execution of 3 distinct training/testing folds. A significantly low confidence_score (< 0.2) should correctly flag assets with high volatility or erratic historical trends.
+
+## 🚀 Getting Started
+
+This project uses Docker Compose to orchestrate the Java Bridge and Python Inference services.
+
+### Prerequisites
+
+- Docker & Docker Compose
+- Git
+
+### Installation & Run
+
+1. Clone the repository:
+   ```bash
+   git clone git@github.com:USERNAME/fire-predictive-engine.git
+   cd fire-predictive-engine
+   ```

@@ -1,0 +1,68 @@
+# --- Python (FastAPI, Scikit, Pandas) ---
+__pycache__/
+*.pyc
+.pytest_cache/
+venv/
+env/
+.env
+*.log
+logs/
+*.pkl
+*.joblib
+*.npy
+
+# Data
+*.csv
+*.json
+*.h5
+/data/
+.ipynb_checkpoints/
+
+#Tracks required ticker mapping
+!**/resources/ticker_mapping.json
+
+# --- Java (SpringBoot / Maven) ---
+HELP.md
+target/
+build/
+bin/
+.mvn/*
+!.mvn/wrapper/
+
+# Java/Maven Build Exception for specific nested targets
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+*.flat
+*.skeleton
+release.properties
+pom.xml.*
+
+# --- Docker ---
+.dockerignore
+
+# --- IDEs & Editors ---
+.idea/
+.vscode/
+*.iws
+*.iml
+*.ipr
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+nohup.out

@@ -1,0 +1,50 @@
+spring:
+  profiles:
+    active: dev
+
+  datasource:
+    url: ${DATASOURCE_URL:jdbc:mysql://localhost:3306/fire_db}
+    username: ${DATASOURCE_USERNAME:root}
+    password: ${DATASOURCE_PASSWORD:password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  application:
+    name: fire-engine-bridge
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  messages:
+    basename: messages
+    encoding: UTF-8
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+
+api:
+  security:
+    secret: ${JWT_SECRET:my-strong-secret-12345}
+
+server:
+  port: 8080
+  error:
+    include-stacktrace: never
+
+python:
+  api:
+    url: ${PYTHON_API_URL:http://127.0.0.1:8000/analyze}

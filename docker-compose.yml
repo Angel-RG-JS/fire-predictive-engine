@@ -1,0 +1,63 @@
+services:
+  # 1. DATABASE
+  mysql-db:
+    image: mysql:8.0
+    container_name: fire_db
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    # Only exposing 3306 if you need to see the DB from Workbench
+    #on your host
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: mysqladmin ping -h localhost -u root -p$${DB_ROOT_PASSWORD} || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    volumes:
+      - db_data:/var/lib/mysql
+
+  # 2. PYTHON SERVICE: The ML Brain
+  python-engine:
+    build:
+      context: ./fire-python-service
+      dockerfile: Dockerfile
+    container_name: fire-python-api
+    # No need to expose 8000 to the world if Java is the gatekeeper,
+    # but helpful for debugging.
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+      - AUTH_TOKEN=${PYTHON_AUTH_TOKEN}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      retries: 3
+
+  # 3. JAVA BRIDGE: The Spring Boot Controller
+  java-bridge:
+    build:
+      context: ./fire-engine-bridge
+    container_name: fire-java-bridge
+    ports:
+      - "9090:8080"
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      python-engine:
+        condition: service_healthy
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - DATASOURCE_URL=jdbc:mysql://mysql-db:3306/${DB_NAME}?allowPublicKeyRetrieval=true&useSSL=false
+      - DATASOURCE_USERNAME=${DB_USER}
+      - DATASOURCE_PASSWORD=${DB_PASSWORD}
+      # Use the service name "python-engine"
+      - PYTHON_API_URL=http://python-engine:8000/analyze
+      - PYTHON_AUTH_TOKEN=${PYTHON_AUTH_TOKEN}
+    restart: on-failure
+
+volumes:
+  db_data:

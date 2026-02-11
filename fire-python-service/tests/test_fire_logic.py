@@ -13,11 +13,14 @@ def test_prediction_growth():
     years = 1
 
     # WHEN
-    future = predict_future(returns, current_val, monthly_savings, years)
+    future_values, confidence = predict_future(
+        returns, current_val, monthly_savings, years)
 
     # THEN: Future value should be greater than starting value
-    assert future[-1] > current_val
-    assert len(future) == years
+    assert future_values[-1] > current_val
+    assert len(future_values) == years
+    assert 0 <= confidence <= 1
+    assert confidence > 0.9
 
 
 def test_fire_already_reached():

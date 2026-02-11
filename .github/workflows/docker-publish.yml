@@ -61,11 +61,11 @@ jobs:
         with:
           context: ./fire-engine-bridge
           push: true
-          tags: ghcr.io/${{ github.repository }}/java-bridge:latest
+          tags: ghcr.io/angel-rg-js/fire-predictive-engine/java-bridge:latest
 
       - name: Build and push Python Engine
         uses: docker/build-push-action@v5
         with:
           context: ./fire-python-service
           push: true
-          tags: ghcr.io/${{ github.repository }}/python-engine:latest
+          tags: ghcr.io/angel-rg-js/fire-predictive-engine/python-engine:latest

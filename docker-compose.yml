@@ -21,6 +21,7 @@ services:
 
   # 2. PYTHON SERVICE: The ML Brain
   python-engine:
+    image: ghcr.io/angel-rg-js/fire-predictive-engine/python-engine:latest
     build:
       context: ./fire-python-service
       dockerfile: Dockerfile
@@ -39,6 +40,7 @@ services:
 
   # 3. JAVA BRIDGE: The Spring Boot Controller
   java-bridge:
+    image: ghcr.io/angel-rg-js/fire-predictive-engine/java-bridge:latest
     build:
       context: ./fire-engine-bridge
     container_name: fire-java-bridge

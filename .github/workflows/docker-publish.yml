@@ -1,4 +1,4 @@
-name: Build and Publish Images
+name: CI/CD - Test and Publish
 
 on:
   push:
@@ -8,7 +8,38 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
+  test-and-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Install Python Dependencies
+        run: |
+          pip install -r fire-python-service/requirements.txt
+      - name: Run pytest
+        run: |
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/fire-python-service
+          pytest fire-python-service/tests
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: "maven"
+      - name: Run Maven Tests
+        run: |
+          cd fire-engine-bridge
+          chmod +x mvnw
+          ./mvnw test
+
   build-and-push:
+    needs: test-and-validate
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -30,11 +61,11 @@ jobs:
         with:
           context: ./fire-engine-bridge
           push: true
-          tags: ghcr.io/angel-rg-js/fire-predictive-engine/java-bridge:latest
+          tags: ghcr.io/${{ github.repository }}/java-bridge:latest
 
       - name: Build and push Python Engine
         uses: docker/build-push-action@v5
         with:
           context: ./fire-python-service
           push: true
-          tags: ghcr.io/angel-rg-js/fire-predictive-engine/python-engine:latest
+          tags: ghcr.io/${{ github.repository }}/python-engine:latest

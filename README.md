@@ -88,3 +88,21 @@ This project uses Docker Compose to orchestrate the Java Bridge and Python Infer
    git clone git@github.com:USERNAME/fire-predictive-engine.git
    cd fire-predictive-engine
    ```
+   OR
+
+## 🚀 Quick Start (Docker Deployment)
+
+The fastest way to run the entire ecosystem (Java Bridge + Python Engine + MySQL) is using the pre-built images from GitHub Packages.
+
+### 1. Configure Environment
+
+Create a `.env` file in the root directory:
+
+```bash
+DB_NAME=fire_db
+DB_ROOT_PASSWORD=root_pass
+DB_USER=fire_user
+DB_PASSWORD=fire_pass
+PYTHON_AUTH_TOKEN=your_secure_token_here
+JWT_SECRET=your_jwt_secret_key
+```

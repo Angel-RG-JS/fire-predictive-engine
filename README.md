@@ -1,3 +1,8 @@
+🎯 The Mission: Escaping Financial Entropy
+
+    Most financial tools are toys built on linear assumptions. I built this engine to solve a personal engineering problem: How to quantify freedom in an inefficient system. >
+    This isn't just a calculator; it’s a decoupled, polyglot ecosystem designed to treat personal finance with the same rigor as high-frequency trading infrastructure. I am a business bachelor who hates 'mute tasks' and manual bureaucracy—this engine is my automated response to financial uncertainty.
+
 #Multi-Asset Portfolio Predictive Engine
 ##A Hybrid Microservices Architecture for Financial Asset Forecasting
 
@@ -43,6 +48,8 @@ The system generates a confidence_score using a robust dual-validation approach:
     * Time-Series Cross-Validation: 30% is derived from a TimeSeriesSplit, testing the model's predictive stability across different historical windows.
 
 This ensures that the projection isn't just a "best guess," but a mathematically validated trend based on historical asset behavior.
+
+Note: Random splitting in time-series data is a logical fallacy (data leakage). This engine implements temporal validation to ensure integrity.
 
 🧪 Testing and Validation
 
